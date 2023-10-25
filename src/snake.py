@@ -58,9 +58,11 @@ def game_over():
     death_sound_file = os.path.join(os.path.dirname(__file__), "../sounds/death_sound.mp3")
     death_sound_file = pygame.mixer.Sound(death_sound_file)
     death_sound_file.play()
-    pygame.time.delay(10000)  # Wait for 1 second
-    pygame.quit()
-    sys.exit()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
 # Function to generate food at a random location
 def generate_food():
