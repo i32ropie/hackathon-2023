@@ -72,6 +72,14 @@ def generate_food():
 # Set up the initial food
 food = generate_food()
 
+def load_background(image):
+    bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/"+image)).convert()
+    SCREENRECT = pygame.Rect(0, 0, 800, 600)
+    background = pygame.Surface(SCREENRECT.size)
+    for x in range(0, SCREENRECT.width, bgdtile.get_width()):
+        background.blit(bgdtile, (x, 0))
+    window.blit(background, (0, 0))
+
 play_music()
 
 # Main menu
@@ -96,12 +104,7 @@ def main_menu():
                     return 1  # Hard mode (1 piece of food)
 
         # Fondo del menu
-        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/bgimage.png")).convert()
-        SCREENRECT = pygame.Rect(0, 0, 800, 600)
-        background = pygame.Surface(SCREENRECT.size)
-        for x in range(0, SCREENRECT.width, bgdtile.get_width()):
-            background.blit(bgdtile, (x, 0))
-        window.blit(background, (0, 0))
+        load_background("bgimage.png")
 
         window.blit(title_text, (WINDOW_WIDTH // 2 - 90, 100))
         window.blit(easy_text, (WINDOW_WIDTH // 2 - 120, 200))
@@ -131,17 +134,12 @@ last_move_time = 0
 while True:
     # Setupt background for each difficulty
     if food_count == 5:
-        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/easyBack.png")).convert()
+        load_background("easyBack.png")
     elif food_count == 3:  # Medium mode
-        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/mediumBack.png")).convert()
+        load_background("mediumBack.png")
     else:                   # Hard mode
-        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/hardBack.png")).convert()
+        load_background("hardBack.png")
 
-    SCREENRECT = pygame.Rect(0, 0, 800, 600)
-    background = pygame.Surface(SCREENRECT.size)
-    for x in range(0, SCREENRECT.width, bgdtile.get_width()):
-        background.blit(bgdtile, (x, 0))
-    window.blit(background, (0, 0))
 
     current_time = pygame.time.get_ticks()
 
