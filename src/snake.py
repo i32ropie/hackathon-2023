@@ -24,6 +24,10 @@ clock = pygame.time.Clock()
 SNAKE_SIZE = 20
 snake = [pygame.Rect(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2, SNAKE_SIZE, SNAKE_SIZE)]
 snake_direction = "right"
+HEAD_COLOR = (0, 128, 0)  # Dark green
+BODY_COLOR = (144, 238, 144)  # Light green
+TAIL_COLOR = (255, 255, 0)  # Yellow
+
 
 FOOD_SIZE = 20
 food_image_file = os.path.join(os.path.dirname(__file__), "../imgs/apple.png")
@@ -202,9 +206,22 @@ while True:
     elif keys[pygame.K_DOWN] and snake_direction != "up":
         snake_direction = "down"
 
-    # Draw the snake and food
+    # Draw the snake and food  
     for segment in snake:
         pygame.draw.rect(window, (255, 255, 255), segment)
+    # Draw the snake
+    for i, segment in enumerate(snake):
+        if i == 0:
+            # Draw the head
+            pygame.draw.rect(window, TAIL_COLOR, pygame.Rect(segment[0], segment[1], SNAKE_SIZE, SNAKE_SIZE))
+        elif i == len(snake) - 1:
+            # Draw the tail
+            pygame.draw.rect(window, HEAD_COLOR, pygame.Rect(segment[0], segment[1], SNAKE_SIZE, SNAKE_SIZE))
+        else:
+            # Draw the body
+            pygame.draw.rect(window, BODY_COLOR, pygame.Rect(segment[0], segment[1], SNAKE_SIZE, SNAKE_SIZE))
+
+    # Draw food
     for food in food_list:
         window.blit(food_image, food)
 
