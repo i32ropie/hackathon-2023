@@ -40,10 +40,13 @@ def play_music():
     pygame.mixer.music.load(music_file)
     pygame.mixer.music.play(-1)
 
-play_music()
+def stop_music():
+    pygame.mixer.music.stop()
+
 
 # Function to display the Game Over screen
 def game_over():
+    stop_music()
     game_over_text = font.render("Game Over", True, (255, 0, 0))
     window.blit(game_over_text, (WINDOW_WIDTH // 2 - 60, WINDOW_HEIGHT // 2))
     pygame.display.flip()
@@ -62,6 +65,8 @@ def generate_food():
 
 # Set up the initial food
 food = generate_food()
+
+play_music()
 
 # Main menu
 def main_menu():
@@ -118,6 +123,20 @@ SNAKE_SPEED = 50  # Adjust this value to control the snake's speed
 last_move_time = 0
 
 while True:
+    # Setupt background for each difficulty
+    if food_count == 5:
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/easyBack.png")).convert()
+    elif food_count == 3:  # Medium mode
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/mediumBack.png")).convert()
+    else:                   # Hard mode
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/hardBack.png")).convert()
+
+    SCREENRECT = pygame.Rect(0, 0, 800, 600)
+    background = pygame.Surface(SCREENRECT.size)
+    for x in range(0, SCREENRECT.width, bgdtile.get_width()):
+        background.blit(bgdtile, (x, 0))
+    window.blit(background, (0, 0))
+
     current_time = pygame.time.get_ticks()
 
     # Handle events
@@ -182,9 +201,6 @@ while True:
         snake_direction = "up"
     elif keys[pygame.K_DOWN] and snake_direction != "up":
         snake_direction = "down"
-
-    # Clear the screen
-    window.fill((0, 0, 0))
 
     # Draw the snake and food
     for segment in snake:
