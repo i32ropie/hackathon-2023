@@ -119,6 +119,20 @@ while True:
     # Reset has_eaten
     has_eaten = False
 
+    # Setupt background for each difficulty
+    if food_count == 5:
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/easyBack.png")).convert()
+    elif food_count == 3:  # Medium mode
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/mediumBack.png")).convert()
+    else:                   # Hard mode
+        bgdtile = pygame.image.load(os.path.join(os.path.dirname(__file__), "../imgs/hardBack.png")).convert()
+
+    SCREENRECT = pygame.Rect(0, 0, 800, 600)
+    background = pygame.Surface(SCREENRECT.size)
+    for x in range(0, SCREENRECT.width, bgdtile.get_width()):
+        background.blit(bgdtile, (x, 0))
+    window.blit(background, (0, 0))
+    
     # Move the snake
     if current_time - last_move_time >= SNAKE_SPEED:
         last_move_time = current_time
@@ -172,8 +186,8 @@ while True:
     elif keys[pygame.K_DOWN] and snake_direction != "up":
         snake_direction = "down"
 
-    # Clear the screen
-    window.fill((0, 0, 0))
+    # # Clear the screen
+    # window.fill((0, 0, 0))
 
     # Draw the snake and food
     for segment in snake:
